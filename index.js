@@ -28,7 +28,10 @@ $(function () {
         .on("keydown", function (e) {
             var position = getCaretPosition(e.target);
             var key = e.key === undefined ? String.fromCharCode(e.which) : e.key;
-            var altKey = String.fromCharCode(event.originalEvent.data.charCodeAt(0));
+            var altKey = null;
+            if(event.originalEvent) {
+                altKey = String.fromCharCode(event.originalEvent.data.charCodeAt(0));
+            }
             $("*").logMyEvent("keydown", JSON.stringify({ position: position, key: key, altKey: altKey }));
         })
         .on("textInput", function (e) {
