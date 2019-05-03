@@ -29,5 +29,10 @@ $(function () {
             var position = getCaretPosition(e.target);
             var key = e.key === undefined ? String.fromCharCode(e.which) : e.key;
             $("*").logMyEvent("keydown", JSON.stringify({ position: position, key: key }));
+        })
+        .on("textInput", function (e) {
+            var position = getCaretPosition(e.target);
+            var key = e.key === undefined ? String.fromCharCode(e.which) : e.key;
+            $("*").logMyEvent("textInput", JSON.stringify({ position: position, key: key }));
         });
 })
