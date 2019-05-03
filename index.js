@@ -29,8 +29,8 @@ $(function () {
             var position = getCaretPosition(e.target);
             var key = e.key === undefined ? String.fromCharCode(e.which) : e.key;
             var altKey = null;
-            if (e.originalEvent) {
-                if (e.originalEvent.data) {
+            if (e.originalEvent != undefined && e.originalEvent != null) {
+                if (e.originalEvent.data != undefined && e,originalEvent.data != null) {
                     altKey = String.fromCharCode(event.originalEvent.data.charCodeAt(0));
                 }
             }
