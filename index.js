@@ -33,44 +33,56 @@ $(function () {
         eventType = "textInput";
     }
 
-    $("#number-input")
-        .on("touchstart", function (e) {
-            // iOS detection from: http://stackoverflow.com/a/9039885/177710
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-                $(event.target).attr("type", "number");
-                $(event.target).removeAttr("pattern");
-            }
+    // $("#number-input")
+    //     .on("touchstart", function (e) {
+    //         // iOS detection from: http://stackoverflow.com/a/9039885/177710
+    //         if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+    //             $(event.target).attr("type", "number");
+    //             $(event.target).removeAttr("pattern");
+    //         }
 
-            if (userAgent.toLowerCase().indexOf("firefox") > -1) {
-                $(event.target).attr("type", "number");
-                $(event.target).attr("step", "any");
-            }
-        })
-        .on(eventType, function (e) {
-            var key = e.key === undefined ? String.fromCharCode(e.which) : e.key;
-            if (e.originalEvent != undefined && e.originalEvent != null) {
-                if (e.originalEvent.data != undefined && e.originalEvent.data != null) {
-                    key = String.fromCharCode(e.originalEvent.data.charCodeAt(0));
-                }
-            }
+    //         if (userAgent.toLowerCase().indexOf("firefox") > -1) {
+    //             $(event.target).attr("type", "number");
+    //             $(event.target).attr("step", "any");
+    //         }
+    //     })
+    //     .on(eventType, function (e) {
+    //         var key = e.key === undefined ? String.fromCharCode(e.which) : e.key;
+    //         if (e.originalEvent != undefined && e.originalEvent != null) {
+    //             if (e.originalEvent.data != undefined && e.originalEvent.data != null) {
+    //                 key = String.fromCharCode(e.originalEvent.data.charCodeAt(0));
+    //             }
+    //         }
 
-            if (["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Home", "Control", "Alt"].indexOf(key) > -1) {
-                return true;
-            }
+    //         if (["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Home", "Control", "Alt"].indexOf(key) > -1) {
+    //             return true;
+    //         }
 
-            var position = getCaretPosition(e.target);
-            $("*").logMyEvent(e.type, { position: position, key: key, value: e.target.value });
+    //         var position = getCaretPosition(e.target);
+    //         $("*").logMyEvent(e.type, { position: position, key: key, value: e.target.value });
 
-            var $input = $(e.target);
-            var oldValue = $input.val();
-            var newValue = oldValue.substr(0, position.start) + key + oldValue.substr(position.end);
-            var checkForCurrencyInputResult = checkForCurrencyInput(newValue);
+    //         var $input = $(e.target);
+    //         var oldValue = $input.val();
+    //         var newValue = oldValue.substr(0, position.start) + key + oldValue.substr(position.end);
+    //         var checkForCurrencyInputResult = checkForCurrencyInput(newValue);
 
-            //$("*").logMyEvent(e.type, { oldValue, newValue, checkForCurrencyInputResult });
+    //         //$("*").logMyEvent(e.type, { oldValue, newValue, checkForCurrencyInputResult });
 
-            if (checkForCurrencyInputResult === false) {
-                e.preventDefault();
-                return false;
-            }
-        });
+    //         if (checkForCurrencyInputResult === false) {
+    //             e.preventDefault();
+    //             return false;
+    //         }
+    //     });
+
+    // var input = document.getElementById("number-input");
+    // input.addEventListener("input", function(event) {
+    //     console.log(event.target.value);
+    // })
+
+     $("#number-input")
+     .on("input", function(event) {
+         var element = event.target;
+         console.log(element.value);
+         $("*").logMyEvent(event.type, element.value);
+     })
 })
