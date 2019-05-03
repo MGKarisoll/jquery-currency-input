@@ -16,7 +16,23 @@ function getCaretPosition(ctrl) {
 
 function checkForCurrencyInput(stringValue) {
     var pattern = /^\d{1,23}\.?\d{0,2}$/g;
-    return pattern.test(stringValue);
+    if (stringValue) {
+        return pattern.test(stringValue);
+    }
+    else {
+        return true;
+    }
+}
+
+function handleInputModernBrowser(event) {
+    var element = event.target;
+    var previousValue = $(element).attr("data-prev-value");
+    var checkForCurrencyInputResult = checkForCurrencyInput(element.value);
+    if (checkForCurrencyInputResult === false) {
+        element.value = previousValue;
+    } else {
+        $(element).attr("data-prev-value", element.value);
+    }
 }
 
 $.fn.extend({
@@ -28,6 +44,7 @@ $.fn.extend({
 
 $(function () {
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    console.log(userAgent);
     var eventType = "keydown";
     if (userAgent.toLowerCase().indexOf("chrome") > -1) {
         eventType = "textInput";
@@ -79,10 +96,29 @@ $(function () {
     //     console.log(event.target.value);
     // })
 
-     $("#number-input")
-     .on("input", function(event) {
-         var element = event.target;
-         console.log(element.value);
-         $("*").logMyEvent(event.type, element.value);
-     })
-})
+    if (/MSIE (7|8|9)/g.test(userAgent)) {
+        console.log("old browser");
+        $("#number-input")
+            .on("focus", function (event) {
+                var lastValue = event.target.value;
+                timerId = setInterval(function () {
+                    if (event.target.value != lastValue) {
+                        var checkForCurrencyInputResult = checkForCurrencyInput(event.target.value)
+                        console.log(lastValue, "=>", event.target.value, ":", checkForCurrencyInputResult);
+                        if (checkForCurrencyInputResult === false) {
+                            event.target.value = lastValue;
+                        } else {
+                            lastValue = event.target.value;
+                        }
+                    }
+                }, 20);
+            })
+            .on("blur", function () {
+                clearInterval(timerId);
+            });
+    } else {
+        console.log("modern browser");
+        $("#number-input")
+            .on("input", handleInputModernBrowser);
+    }
+});
