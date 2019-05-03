@@ -52,10 +52,11 @@ $(function () {
             var $input = $(e.target);
             var oldValue = $input.val();
             var newValue = oldValue.substr(0, position.start) + key + oldValue.substr(position.end);
+            var checkForCurrencyInputResult = checkForCurrencyInput(newValue);
 
-            $("*").logMyEvent(e.type, { oldValue, newValue });
+            $("*").logMyEvent(e.type, { oldValue, newValue, checkForCurrencyInputResult });
 
-            if (checkForCurrencyInput(newValue) === false) {
+            if (checkForCurrencyInputResult === false) {
                 e.preventDefault();
                 return false;
             }
