@@ -29,7 +29,11 @@ function handleInputModernBrowser(event) {
     var previousValue = $(element).attr("data-prev-value");
     var checkForCurrencyInputResult = checkForCurrencyInput(element.value);
     if (checkForCurrencyInputResult === false) {
-        element.value = previousValue;
+        if(previousValue) {
+            element.value = previousValue;
+        } else {
+            element.value = "";
+        }        
     } else {
         $(element).attr("data-prev-value", element.value);
     }
@@ -106,7 +110,12 @@ $(function () {
                         var checkForCurrencyInputResult = checkForCurrencyInput(event.target.value)
                         console.log(lastValue, "=>", event.target.value, ":", checkForCurrencyInputResult);
                         if (checkForCurrencyInputResult === false) {
-                            event.target.value = lastValue;
+                            if(lastValue) {
+                                event.target.value = lastValue;
+                            } else {
+                                event.target.value = "";
+                            }
+                            
                         } else {
                             lastValue = event.target.value;
                         }
