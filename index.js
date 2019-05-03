@@ -14,6 +14,10 @@ function getCaretPosition(ctrl) {
     }
 }
 
+function checkForCurrencyInput(stringValue) {
+
+}
+
 $.fn.extend({
     logMyEvent: function (eventName, text) {
         var log = $("<li>").html(new Date().toString() + " [" + eventName + "]: " + text);
@@ -22,28 +26,33 @@ $.fn.extend({
 });
 
 $(function () {
-    $("*").logMyEvent("-", "test")
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    console.log(userAgent);
+    var eventType = "keydown";
+    if(userAgent.toLowerCase().indexOf("chrome") > -1) {
+        eventType = "textInput";
+    }
 
     $("#number-input")
-        .on("keydown", function (e) {
+        .on(eventType, function (e) {
             var position = getCaretPosition(e.target);
             var key = e.key === undefined ? String.fromCharCode(e.which) : e.key;
-            var altKey = null;
-            if (e.originalEvent != undefined && e.originalEvent != null) {
-                if (e.originalEvent.data != undefined && e.originalEvent.data != null) {
-                    altKey = String.fromCharCode(e.originalEvent.data.charCodeAt(0));
-                }
-            }
-            $("*").logMyEvent("keydown", JSON.stringify({ position: position, key: key, altKey: altKey }));
-        })
-        .on("textInput", function (e) {
-            var position = getCaretPosition(e.target);
-            var key = null;
             if (e.originalEvent != undefined && e.originalEvent != null) {
                 if (e.originalEvent.data != undefined && e.originalEvent.data != null) {
                     key = String.fromCharCode(e.originalEvent.data.charCodeAt(0));
                 }
             }
-            $("*").logMyEvent("textInput", JSON.stringify({ position: position, key: key }));
+            
+            $("*").logMyEvent(e.type, JSON.stringify({ position: position, key: key }));
         });
+        // .on("textInput", function (e) {
+        //     var position = getCaretPosition(e.target);
+        //     var key = null;
+        //     if (e.originalEvent != undefined && e.originalEvent != null) {
+        //         if (e.originalEvent.data != undefined && e.originalEvent.data != null) {
+        //             key = String.fromCharCode(e.originalEvent.data.charCodeAt(0));
+        //         }
+        //     }
+        //     $("*").logMyEvent("textInput", JSON.stringify({ position: position, key: key }));
+        // });
 })
