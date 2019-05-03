@@ -59,14 +59,14 @@ $(function () {
             }
 
             var position = getCaretPosition(e.target);
-            $("*").logMyEvent(e.type, { position: position, key: key });
+            $("*").logMyEvent(e.type, { position: position, key: key, value: e.target.value });
 
             var $input = $(e.target);
             var oldValue = $input.val();
             var newValue = oldValue.substr(0, position.start) + key + oldValue.substr(position.end);
             var checkForCurrencyInputResult = checkForCurrencyInput(newValue);
 
-            $("*").logMyEvent(e.type, { oldValue, newValue, checkForCurrencyInputResult });
+            //$("*").logMyEvent(e.type, { oldValue, newValue, checkForCurrencyInputResult });
 
             if (checkForCurrencyInputResult === false) {
                 e.preventDefault();
