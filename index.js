@@ -15,44 +15,49 @@ function getCaretPosition(ctrl) {
 }
 
 function checkForCurrencyInput(stringValue) {
-
+    var pattern = /^\d{1,23}\.?\d{0,2}$/g;
+    return pattern.test(stringValue);
 }
 
 $.fn.extend({
-    logMyEvent: function (eventName, text) {
-        var log = $("<li>").html(new Date().toString() + " [" + eventName + "]: " + text);
+    logMyEvent: function (eventName, value) {
+        var log = $("<li>").html(new Date().toString() + " [" + eventName + "]: " + JSON.stringify(value));
         $("#logs").prepend(log);
     }
 });
 
 $(function () {
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    console.log(userAgent);
     var eventType = "keydown";
-    if(userAgent.toLowerCase().indexOf("chrome") > -1) {
+    if (userAgent.toLowerCase().indexOf("chrome") > -1) {
         eventType = "textInput";
     }
 
     $("#number-input")
         .on(eventType, function (e) {
-            var position = getCaretPosition(e.target);
             var key = e.key === undefined ? String.fromCharCode(e.which) : e.key;
             if (e.originalEvent != undefined && e.originalEvent != null) {
                 if (e.originalEvent.data != undefined && e.originalEvent.data != null) {
                     key = String.fromCharCode(e.originalEvent.data.charCodeAt(0));
                 }
             }
-            
-            $("*").logMyEvent(e.type, JSON.stringify({ position: position, key: key }));
+
+            if (["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Home", "Control", "Alt"].indexOf(key) > -1) {
+                return true;
+            }
+
+            var position = getCaretPosition(e.target);
+            $("*").logMyEvent(e.type, { position: position, key: key });
+
+            var $input = $(e.target);
+            var oldValue = $input.val();
+            var newValue = oldValue.substr(0, position.start) + key + oldValue.substr(position.end);
+
+            $("*").logMyEvent(e.type, { oldValue, newValue });
+
+            if (checkForCurrencyInput(newValue) === false) {
+                e.preventDefault();
+                return false;
+            }
         });
-        // .on("textInput", function (e) {
-        //     var position = getCaretPosition(e.target);
-        //     var key = null;
-        //     if (e.originalEvent != undefined && e.originalEvent != null) {
-        //         if (e.originalEvent.data != undefined && e.originalEvent.data != null) {
-        //             key = String.fromCharCode(e.originalEvent.data.charCodeAt(0));
-        //         }
-        //     }
-        //     $("*").logMyEvent("textInput", JSON.stringify({ position: position, key: key }));
-        // });
 })
