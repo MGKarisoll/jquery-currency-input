@@ -28,7 +28,7 @@ $.fn.extend({
 
 $(function () {
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    var eventType = "keypress";
+    var eventType = "keydown";
     if (userAgent.toLowerCase().indexOf("chrome") > -1) {
         eventType = "textInput";
     }
@@ -40,7 +40,7 @@ $(function () {
                 $(event.target).attr("type", "number");
                 $(event.target).removeAttr("pattern");
             }
-            
+
             if (userAgent.toLowerCase().indexOf("firefox") > -1) {
                 $(event.target).attr("type", "number");
                 $(event.target).attr("step", "any");
