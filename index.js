@@ -31,7 +31,7 @@ $(function () {
             var altKey = null;
             if (e.originalEvent != undefined && e.originalEvent != null) {
                 if (e.originalEvent.data != undefined && e.originalEvent.data != null) {
-                    altKey = String.fromCharCode(event.originalEvent.data.charCodeAt(0));
+                    altKey = String.fromCharCode(e.originalEvent.data.charCodeAt(0));
                 }
             }
             $("*").logMyEvent("keydown", JSON.stringify({ position: position, key: key, altKey: altKey }));
@@ -41,7 +41,7 @@ $(function () {
             var key = null;
             if (e.originalEvent != undefined && e.originalEvent != null) {
                 if (e.originalEvent.data != undefined && e.originalEvent.data != null) {
-                    key = String.fromCharCode(event.originalEvent.data.charCodeAt(0));
+                    key = String.fromCharCode(e.originalEvent.data.charCodeAt(0));
                 }
             }
             $("*").logMyEvent("textInput", JSON.stringify({ position: position, key: key }));
