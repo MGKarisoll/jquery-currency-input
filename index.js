@@ -28,11 +28,12 @@ $(function () {
         .on("keydown", function (e) {
             var position = getCaretPosition(e.target);
             var key = e.key === undefined ? String.fromCharCode(e.which) : e.key;
-            $("*").logMyEvent("keydown", JSON.stringify({ position: position, key: key }));
+            var altKey = String.fromCharCode(event.originalEvent.data.charCodeAt(0));
+            $("*").logMyEvent("keydown", JSON.stringify({ position: position, key: key, altKey: altKey }));
         })
         .on("textInput", function (e) {
             var position = getCaretPosition(e.target);
-            var key = e.key === undefined ? String.fromCharCode(e.which) : e.key;
+            var key = String.fromCharCode(event.originalEvent.data.charCodeAt(0));
             $("*").logMyEvent("textInput", JSON.stringify({ position: position, key: key }));
         });
 })
