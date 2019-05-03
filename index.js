@@ -38,7 +38,12 @@ $(function () {
         })
         .on("textInput", function (e) {
             var position = getCaretPosition(e.target);
-            var key = String.fromCharCode(event.originalEvent.data.charCodeAt(0));
+            var key = null;
+            if (e.originalEvent != undefined && e.originalEvent != null) {
+                if (e.originalEvent.data != undefined && e,originalEvent.data != null) {
+                    key = String.fromCharCode(event.originalEvent.data.charCodeAt(0));
+                }
+            }
             $("*").logMyEvent("textInput", JSON.stringify({ position: position, key: key }));
         });
 })
