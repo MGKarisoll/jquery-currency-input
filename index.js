@@ -119,6 +119,18 @@ $(function () {
     } else {
         console.log("modern browser");
         $("#number-input")
+            .on("touchstart", function (e) {
+                // iOS detection from: http://stackoverflow.com/a/9039885/177710
+                if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                    $(event.target).attr("type", "number");
+                    $(event.target).removeAttr("pattern");
+                }
+
+                if (userAgent.toLowerCase().indexOf("firefox") > -1) {
+                    $(event.target).attr("type", "number");
+                    $(event.target).attr("step", "any");
+                }
+            })
             .on("input", handleInputModernBrowser);
     }
 });
