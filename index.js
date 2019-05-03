@@ -29,8 +29,10 @@ $(function () {
             var position = getCaretPosition(e.target);
             var key = e.key === undefined ? String.fromCharCode(e.which) : e.key;
             var altKey = null;
-            if(event.originalEvent.data) {
-                altKey = String.fromCharCode(event.originalEvent.data.charCodeAt(0));
+            if (e.originalEvent) {
+                if (e.originalEvent.data) {
+                    altKey = String.fromCharCode(event.originalEvent.data.charCodeAt(0));
+                }
             }
             $("*").logMyEvent("keydown", JSON.stringify({ position: position, key: key, altKey: altKey }));
         })
