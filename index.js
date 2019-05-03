@@ -28,7 +28,7 @@ $.fn.extend({
 
 $(function () {
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    var eventType = "keydown";
+    var eventType = "keypress";
     if (userAgent.toLowerCase().indexOf("chrome") > -1) {
         eventType = "textInput";
     }
